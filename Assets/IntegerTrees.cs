@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Text.RegularExpressions;
 using KModkit;
 
 public class IntegerTrees : MonoBehaviour {
@@ -164,18 +165,78 @@ public class IntegerTrees : MonoBehaviour {
     goto Somethingelse;
   }
  }
- void PressChungus(){
-   chungus.AddInteractionPunch();
-   GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, chungus.transform);
-   if (silvena == gofuckyourself) {
-     Debug.LogFormat("[Integer Trees #{0}] You submitted {1}. Module disarmed.", moduleId, silvena);
-     GetComponent<KMBombModule>().HandlePass();
-   }
-   else {
-     Debug.LogFormat("[Integer Trees #{0}] You submitted {1}. You should have submitted {2}.", moduleId, silvena, gofuckyourself);
-     silvena = 0;
-     Weeds[2].text = silvena.ToString();
-     GetComponent<KMBombModule>().HandleStrike();
-   }
- }
+void PressChungus()
+{
+	chungus.AddInteractionPunch();
+    GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, chungus.transform);
+	if (silvena == gofuckyourself)
+	{
+		Debug.LogFormat("[Integer Trees #{0}] You submitted {1}. Module disarmed.", moduleId, silvena);
+		GetComponent<KMBombModule>().HandlePass();
+	}
+	
+    else
+    {
+		Debug.LogFormat("[Integer Trees #{0}] You submitted {1}. You should have submitted {2}.", moduleId, silvena, gofuckyourself);
+		silvena = 0;
+		Weeds[2].text = silvena.ToString();
+		GetComponent<KMBombModule>().HandleStrike();
+    }
+}
+ 
+	//twitch plays
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"Use !{0} submit [0-9999] to submit your answer";
+    #pragma warning restore 414
+	
+	IEnumerator ProcessTwitchCommand(string command)
+	{
+		string[] parameters = command.Split(' ');
+		if (Regex.IsMatch(parameters[0], @"^\s*submit\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+			yield return null;
+			if (parameters.Length != 2)
+			{
+				yield return "sendtochaterror Invalid parameter length. The command was not processed.";
+				yield break;
+			}
+			
+			int Out;
+			if (!Int32.TryParse(parameters[1], out Out))
+			{
+				yield return "sendtochaterror Invalid number. The command was not processed.";
+				yield break;
+			}
+			
+			if (Out < 0 || Out > 9999)
+			{
+				yield return "sendtochaterror The number is not between 0-9999. The command was not processed.";
+				yield break;
+			}
+			
+			for (int x = 0; x < parameters[1].Length; x++)
+			{
+				if (Weeds[2].text == parameters[1])
+				{
+					break;
+				}
+				
+				else if (parameters[1][parameters[1].Length - 1 - x].ToString() == "0")
+				{
+					continue;
+				}
+				
+				else
+				{
+					WeedEaters[((3 - x) * 2)].OnInteract();
+					while (Weeds[2].text[0].ToString() != parameters[1][parameters[1].Length - 1 - x].ToString())
+					{
+						WeedEaters[((3 - x) * 2)].OnInteract();
+						yield return new WaitForSecondsRealtime(0.05f);
+					}
+				}
+			}
+			chungus.OnInteract();
+		}
+	}
 }
