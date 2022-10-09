@@ -15,8 +15,7 @@ MonoBehaviour:
   title: Integer Trees
   author: me
   description: "Contrary to binary trees, integer trees grow upwards and are actually
-    explained...\r\n\nReupload of a module by Deaf\n\nModule ID: IntegerTrees\nThe
-    manual can be found here: https://ktane.timwi.de/HTML/Integer%20Trees.html"
+    explained...\r\n\nModule ID: IntegerTrees\nThe manual can be found here: https://ktane.timwi.de/HTML/Integer%20Trees.html"
   version: 
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 740956eddc0776741b9685da1199f7b1, type: 3}
