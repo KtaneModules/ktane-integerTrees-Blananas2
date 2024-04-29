@@ -13,9 +13,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: IntegerTrees
   title: Integer Trees
-  author: me
-  description: "Contrary to binary trees, integer trees grow upwards and are actually
-    explained...\r\n\nModule ID: IntegerTrees\nThe manual can be found here: https://ktane.timwi.de/HTML/Integer%20Trees.html"
+  author: Blananas2
+  description: "Don\u2019t you think it\u2019s a bit weird that tree diagrams are
+    generally sideways or inverted, almost never in the same orientation as physical
+    trees?\n\nModule ID: IntegerTrees\nThe manual can be found here: https://ktane.timwi.de/HTML/Integer%20Trees.html"
   version: 
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: 740956eddc0776741b9685da1199f7b1, type: 3}
+  previewImage: {fileID: 2800000, guid: 7999ceb22042a5b4d89c97c8a6e4a988, type: 3}
