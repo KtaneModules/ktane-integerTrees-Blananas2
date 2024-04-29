@@ -1,0 +1,21 @@
+{
+  "Author": "Blananas2",
+  "Compatibility": "Compatible",
+  "DefuserDifficulty": "VeryEasy",
+  "Description": "Create two trees corresponding to two integers to create another tree corresponding to the answer. Tags: math, 9-buttons, 9-arrows, brown-arrows",
+  "ExpertDifficulty": "Medium",
+  "ModuleID": "IntegerTrees",
+  "Name": "Integer Trees",
+  "Origin": "Mods",
+  "Published": "2020-05-10",
+  "SortKey": "INTEGERTREES",
+  "SourceUrl": "https://github.com/Blananas2/ktane-integerTrees",
+  "Souvenir": { "Status": "NotACandidate" },
+  "SteamID": "2246260728",
+  "Symbol": "Itgt",
+  "TutorialVideos": [ {
+    "Language": "English",
+    "Url": "https://www.youtube.com/watch?v=eNt7uB-EBhg"
+  } ],
+  "Type": "Regular"
+}
