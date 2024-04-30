@@ -123,7 +123,7 @@ public class integerTreesScript : MonoBehaviour {
 
     void UpArrowPress(KMSelectable arw) {
         arw.AddInteractionPunch(0.5f);
-        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, arw.transform);
+        Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, arw.transform);
         for (int a = 0; a < 8; a++) {
             if (arw == uArrows[a]) {
                 aDigits[a] = (aDigits[a] + 1)%10;
@@ -135,7 +135,7 @@ public class integerTreesScript : MonoBehaviour {
     void Submit() {
         rArrow.AddInteractionPunch();
         if (moduleSolved) { return; }
-        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.BigButtonPress, rArrow.transform);
+        Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.BigButtonPress, rArrow.transform);
         if (ans.ToString("00000000") == oText.text) {
             moduleSolved = true;
             Debug.LogFormat("[Integer Trees #{0}] Correct answer given. Module solved.", moduleId);
@@ -145,5 +145,60 @@ public class integerTreesScript : MonoBehaviour {
             Debug.LogFormat("[Integer Trees #{0}] Incorrect answer ({1}) given, strike!", moduleId, (wrong.Length == 0) ? "0" : wrong);
             GetComponent<KMBombModule>().HandleStrike();
         }
+    }
+
+    //twitch plays
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} submit <answer> [Submits an answer]";
+    #pragma warning restore 414
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        string[] parameters = command.Split(' ');
+        if (parameters[0].EqualsIgnoreCase("submit"))
+        {
+            if (parameters.Length > 2)
+                yield return "sendtochaterror Too many parameters!";
+            else if (parameters.Length == 2)
+            {
+                int temp;
+                if (!int.TryParse(parameters[1], out temp))
+                {
+                    yield return "sendtochaterror The specified answer '" + parameters[1] + "' is invalid!";
+                    yield break;
+                }
+                if (temp < 0 || temp > 99999999)
+                {
+                    yield return "sendtochaterror The specified answer '" + parameters[1] + "' is invalid!";
+                    yield break;
+                }
+                yield return null;
+                string submission = temp.ToString("00000000");
+                for (int i = 0; i < submission.Length; i++)
+                {
+                    while (oText.text[i] != submission[i])
+                    {
+                        uArrows[i].OnInteract();
+                        yield return new WaitForSeconds(.1f);
+                    }
+                }
+                rArrow.OnInteract();
+            }
+            else
+                yield return "sendtochaterror Please specify an answer to submit!";
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        string answer = ans.ToString("00000000");
+        for (int i = 0; i < answer.Length; i++)
+        {
+            while (oText.text[i] != answer[i])
+            {
+                uArrows[i].OnInteract();
+                yield return new WaitForSeconds(.1f);
+            }
+        }
+        rArrow.OnInteract();
     }
 }
